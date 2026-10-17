@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="hi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ब्लॉग और PPT लिस्ट</title>
+    <title>Blog</title>
     <style>
+        /* बेसिक रीसेट और लेआउट */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -12,107 +14,996 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: #f7f9fc;
-            padding: 16px;
-            color: #333;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 10px;
+            /* मोबाइल पर किनारों से जगह छोड़ने के लिए */
         }
 
-        .header-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 16px;
+        h1 {
             text-align: center;
-            color: #1a202c;
+            margin-bottom: 20px;
+            font-size: 24px;
         }
 
-        .blog-container {
+        /* मुख्य 12 कंटेनरों का लेआउट */
+        .main-container {
             display: flex;
             flex-direction: column;
-            gap: 14px;
-            max-width: 500px;
+            gap: 30px;
+            max-width: 800px;
+            width: 100%;
             margin: 0 auto;
         }
 
-        .blog-card {
-            background-color: #ffffff;
-            border-radius: 12px;
-            padding: 16px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e2e8f0;
+        /* हर स्लाइडर कंटेनर की स्टाइलिंग (मोबाइल पर स्क्रीन के हिसाब से चौड़ाई बदलेगी) */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            height: 350px;
+            /* मोबाइल और लैपटॉप दोनों के लिए परफेक्ट हाइट */
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            background: #111;
+            /* ताकि फोटो न कटने पर साइड में अच्छा बैकग्राउंड दिखे */
         }
 
-        .blog-card h3 {
-            font-size: 16px;
-            margin-bottom: 8px;
-            color: #2d3748;
-        }
-
-        .blog-card p {
-            font-size: 13px;
-            color: #718096;
-            margin-bottom: 14px;
-            line-height: 1.4;
-        }
-
-        .btn-group {
+        /* स्लाइडर रैपर जो इमेज को एक लाइन में रखता है */
+        .slider-wrapper {
             display: flex;
-            gap: 10px;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
         }
 
+        /* फोटो स्टाइलिंग - फोटो कभी नहीं कटेगी और पूरी दिखेगी */
+        .slider-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* फोटो को बिना काटे पूरा फिट करेगा */
+            background-color: #111;
+            /* खाली जगह पर डार्क बैकग्राउंड */
+            flex-shrink: 0;
+        }
+
+        /* Next / Prev बटन स्टाइलिंग */
         .btn {
-            flex: 1;
-            text-align: center;
-            padding: 10px 0;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: opacity 0.2s;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            font-size: 20px;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            z-index: 10;
         }
 
-        .btn:active {
-            opacity: 0.8;
+        .btn:hover {
+            background-color: rgba(0, 0, 0, 0.9);
         }
 
-        .btn-video {
-            background-color: #e53e3e;
-            color: #ffffff;
+        .prev-btn {
+            left: 10px;
         }
 
-        .btn-ppt {
-            background-color: #3182ce;
-            color: #ffffff;
+        .next-btn {
+            right: 10px;
+        }
+
+        /* === मोबाइल स्क्रीन के लिए मीडिया क्वेरी (Media Query) === */
+        @media (max-width: 600px) {
+            .slider-container {
+                height: 250px;
+                /* छोटे फोन की स्क्रीन पर हाइट थोड़ी कम हो जाएगी ताकि सही दिखे */
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            .btn {
+                font-size: 16px;
+                padding: 6px 10px;
+            }
+        }
+
+        .header {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto 20px auto;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            background-color: #111;
+        }
+
+        .header img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
         }
     </style>
+    <header class="header">
+        <a href="#"><img src="blog.jpg" alt=""></a>
+    </header>
 </head>
+
 <body>
 
-    <h1 class="header-title">लेटेस्ट ब्लॉग व PPT</h1>
+   
 
-    <div class="blog-container">
+    <div class="main-container">
 
-        <!-- नया ब्लॉग जोड़ने के लिए इस पूरे ब्लॉक को कॉपी-पेस्ट करें -->
-        <div class="blog-card">
-            <h3>ब्लॉग 1: टॉपिक का नाम</h3>
-            <p>यहाँ ब्लॉग या वीडियो के बारे में संक्षिप्त जानकारी लिखें।</p>
-            <div class="btn-group">
-                <a href="https://youtube.com/YOUR_VIDEO_URL_1" target="_blank" class="btn btn-video">वीडियो देखें</a>
-                <a href="https://drive.google.com/YOUR_PPT_URL_1" target="_blank" class="btn btn-ppt">PPT खोलें</a>
+        <!-- ================= CONTAINER 1 ================= -->
+         <h1>Sandeep Singh and Nikki Arora Singh   05/08/2026</h1>
+        <div class="slider-container">
+            <button class="btn prev-btn">&#10094;</button>
+            <button class="btn next-btn">&#10095;</button>
+            <div class="slider-wrapper">
+                <img src="r1.jpeg" alt="Photo 1">
+                <img src="r2.jpeg" alt="Photo 2">
+                <img src="r3.jpeg" alt="Photo 3">
+                <img src="r4.jpeg" alt="Photo 4">
+                <img src="r5.jpeg" alt="Photo 5">
+                <img src="r6.jpeg" alt="Photo 6">
             </div>
         </div>
+        <span>
 
-        <!-- दूसरा ब्लॉग -->
-        <div class="blog-card">
-            <h3>ब्लॉग 2: टॉपिक का नाम</h3>
-            <p>यहाँ ब्लॉग या वीडियो के बारे में संक्षिप्त जानकारी लिखें।</p>
-            <div class="btn-group">
-                <a href="https://youtube.com/YOUR_VIDEO_URL_2" target="_blank" class="btn btn-video">वीडियो देखें</a>
-                <a href="https://drive.google.com/YOUR_PPT_URL_2" target="_blank" class="btn btn-ppt">PPT खोलें</a>
+            <ol>
+                <li>Slide 2 (The Idea - 2019): Light background. Title "1 The Idea (2019)". Photo of founders Sandeep
+                    Singh and Nikki Arora Singh. Text explaining they founded it to bring the taste of meat from plants.
+                    Include a quote: "We wanted to create food that’s good for you, kind to animals and better for the
+                    planet."
+                </li>
+                <li>
+                    Slide 3 (How It Works): Title "2 How It Works". Show bowls of soy, peas, and grains. Icons for "100%
+                    Plant-Based", "No Animal Ingredients", "Rich in Protein", "Good for You & The Planet". Tagline:
+                    "Same great taste. No animal meat."
+
+                </li>
+                <li>
+                    Slide 4 (Products): Title "3 First Products (2020)". A grid of 6 food photos: Nuggets, Mince/Keema,
+                    Sausages, Momos, Kebabs, Soya Chaap. Tagline: "Tasty. Nutritious. 100% Plant-Based."
+
+                </li>
+                <li>
+                    Slide 5 (Celebrity Investment): Title "4 Celebrity Investment (February 2022)". Photo of Virat Kohli
+                    and Anushka Sharma. Text stating they joined as investors and brand ambassadors. Note: "Investment
+                    amount not publicly disclosed." Include a logo for Blue Tribe Foods.
+
+                </li>
+                <li>
+                    Slide 6 (Challenges & Growth): Split screen. Left side "5 Challenges & Response" with red icons for
+                    challenges (skepticism, price, distribution) and green checkmarks for solutions (R&D, education,
+                    wider range). Right side "6 Growth & The Road Ahead" with a target icon and text: "To become a ₹200
+                    crore company within 5 years." Bottom banner: "Plant-Based Food | Healthier People | A Kinder Planet
+                    | A Brighter Future".
+
+                </li>
+            </ol>
+        </span>
+
+        <!-- ================= CONTAINER 2 ================= -->
+        <h1> Sandeep Singh and Nikki Arora Singh    13/08/2026</h1>
+        <div class="slider-container">
+            <button class="btn prev-btn">&#10094;</button>
+            <button class="btn next-btn">&#10095;</button>
+            <div class="slider-wrapper">
+                <img src="aa1.jpeg" alt="Photo 1">
+                <img src="aa2.jpeg" alt="Photo 1">
+                <img src="aa3.jpeg" alt="Photo 1">
+                <img src="aa4.jpeg" alt="Photo 1">
+                <img src="aa5.jpeg" alt="Photo 1">
+                <img src="aa6.jpeg" alt="Photo 1">
+            </div>
+        </div>
+        <span>
+            <ol>
+                <li> Slide 1 (Cover): Dark blue background with leafy greens. Bold white and green text "THE JOURNEY
+                    OF BLUE TRIBE FOODS". A tagline "From a simple idea to a plant-based revolution". Show a box of
+                    "Plant-Based Chicken Nuggets" with a bowl of nuggets and ketchup. Include logos for "E-Cell
+                    Oxford Group of Institutions" and "E-Cell IIT Bombay's National Entrepreneurship Challenge
+                    2026".
+                </li>
+                <li>
+                    Slide 2 (The Idea - 2019): Light background. Title "1 The Idea (2019)". Photo of founders
+                    Sandeep Singh and Nikki Arora Singh. Text explaining they founded it to bring the taste of meat
+                    from plants. Include a quote: "We wanted to create food that’s good for you, kind to animals and
+                    better for the planet."
+
+                </li>
+                <li>Slide 3 (How It Works): Title "2 How It Works". Show bowls of soy, peas, and grains. Icons for
+                    "100% Plant-Based", "No Animal Ingredients", "Rich in Protein", "Good for You & The Planet".
+                    Tagline: "Same great taste. No animal meat."
+                </li>
+
+                <li>Slide 4 (Products): Title "3 First Products (2020)". A grid of 6 food photos: Nuggets,
+                    Mince/Keema, Sausages, Momos, Kebabs, Soya Chaap. Tagline: "Tasty. Nutritious. 100%
+                    Plant-Based."
+                </li>
+                <li>Slide 5 (Celebrity Investment): Title "4 Celebrity Investment (February 2022)". Photo of Virat
+                    Kohli and Anushka Sharma. Text stating they joined as investors and brand ambassadors. Note:
+                    "Investment amount not publicly disclosed." Include a logo for Blue Tribe Foods.
+                </li>
+                <li>Slide 6 (Challenges & Growth): Split screen. Left side "5 Challenges & Response" with red icons
+                    for challenges (skepticism, price, distribution) and green checkmarks for solutions (R&D,
+                    education, wider range). Right side "6 Growth & The Road Ahead" with a target icon and text: "To
+                    become a ₹200 crore company within 5 years." Bottom banner: "Plant-Based Food | Healthier People
+                    | A Kinder Planet | A Brighter Future".
+                </li>
+            </ol>
+        </span>
+
+        <!-- ================= CONTAINER 3 ================= -->
+          <h1> Kamlesh Nanasaheb Ghumare    17/08/2026</h1>
+        <div class="slider-container">
+           
+            <button class="btn prev-btn">&#10094;</button>
+            <button class="btn next-btn">&#10095;</button>
+            <div class="slider-wrapper">
+                <img src="agri1.jpeg" alt="Photo 1">
+                <img src="agri2.jpeg" alt="Photo 1">
+                <img src="agri3.jpeg" alt="Photo 1">
+                <img src="agri4.jpeg" alt="Photo 1">
+                <img src="agri5.jpeg" alt="Photo 1">
+                <img src="agri6.jpeg" alt="Photo 1">
+            </div>
+        </div>
+        <span>
+
+            <ol>
+                <li>Slide 1 (The Problem): Show a farmer in a field carrying a heavy blue pesticide sprayer tank
+                    on his back. Headline: "The Problem". Text explains he saw his father and other farmers
+                    struggling with heavy tanks causing physical strain, health risks, and time wastage. Tagline
+                    at the bottom: "That's when the idea began..."
+                </li>
+                <li>Slide 2 (The Farmer's Son): A portrait of a young Indian man, Kamlesh Nanasaheb Ghumare,
+                    looking thoughtful. Title: "The Farmer's Son". Include his name in bold yellow. Icons for
+                    location (Born in Devrapade village, Maharashtra), education (Studied at NS Deshmukh
+                    Vidyalaya, left BCA in 2nd year to solve agricultural problems), and a yellow badge saying
+                    "Farmer Innovator Entrepreneur".
+                </li>
+                <li>Slide 3 (The Journey of Innovation): Title: "The Journey of Innovation - With limited
+                    resources, he built his own solutions." Show three images: 1) A bicycle-based pesticide
+                    spraying cart made from scrap (First Prototype). 2) A young man welding (Years of Hard Work
+                    - ~7 years refining design). 3) A green multipurpose agricultural cart labeled "Bharat K-2"
+                    (Improved Version). Tagline: "Turning a simple idea into a real solution!"
+                </li>
+                <li>Slide 4 (Shark Tank India): Title: "Shark Tank India". Show a photo of Kamlesh and his
+                    cousin Naru on the TV show stage. Include a photo of Shark Peyush Bansal making an offer.
+                    Text box: "₹10 Lakh for 40% equity + ₹20 Lakh interest-free loan". Tagline: "More than
+                    money, it gave him mentorship, exposure and a bigger dream."
+                </li>
+                <li>Slide 5 (KG Agrotech & Bharat K-2): A large image of the green "Bharat K-2" agricultural
+                    cart in a field. Title: "KG Agrotech & Bharat K-2". Logo for "KG Agrotech - Innovating for
+                    Better Farming". Key Features box: Affordable, Helps in spraying/seed sowing/transporting,
+                    Built for small and marginal farmers. Tagline: "Better Tools -> Better Farming -> A Brighter
+                    Future".
+                </li>
+                <li>Slide 6 (Lessons & Legacy): A portrait of Kamlesh with a sunset field background. Title:
+                    "Lessons & Legacy". A quote: "Big dreams don't need big resources, just a problem, passion
+                    and persistence." - Jugaadu Kamlesh. A "What We Can Learn" section with icons: Spot real
+                    problems, Learn by doing, Keep improving, Use the right support to scale. Tagline: "From a
+                    small village idea to a national inspiration. The journey continues..."
+                </li>
+            </ol>
+
+        </span>
+
+
+        <!-- ================= CONTAINER 4 ================= -->
+        <h1>Kaivalya Vohra and Aadit Palicha   23/08/2026</h1>
+        <div class="slider-container">
+            <button class="btn prev-btn">&#10094;</button>
+            <button class="btn next-btn">&#10095;</button>
+            <div class="slider-wrapper">
+                <img src="zepto1.jpeg" alt="Photo 1">
+                <img src="zepto2.jpeg" alt="Photo 1">
+                <img src="zepto3.jpeg" alt="Photo 1">
+                <img src="zepto4.jpeg" alt="Photo 1">
+                <img src="zepto5.jpeg" alt="Photo 1">
+            </div>
+        </div>
+        <span>
+            <ol>
+                <li>
+                    Slide 1 (The First Challenge - No Money): Dark, moody lighting. Two young Indian men
+                    (Kaivalya Vohra and Aadit Palicha) looking intensely at a laptop in a dimly lit room.
+                    Title: "The First Challenge - No Money". Text: "They had no capital, no office, no team,
+                    and no investors. Just their laptops, skills and a strong belief in their idea." Icons
+                    for No funding, No team, No infrastructure, Doubts & criticism. A quote card: "We didn't
+                    have money, but we had time, energy and a crazy idea." - Kaivalya Vohra. Tagline: "But
+                    they didn't quit. They kept going."
+                </li>
+                <li>
+                    Slide 2 (The Turning Point - Facing the Real World): Bright, clean background. Title:
+                    "The Turning Point - Facing the Real World". A large smartphone mockup displaying the
+                    Zepto app interface with "10 Minute Delivery" and categories like Groceries, Snacks,
+                    Beauty. A paper grocery bag with the Zepto logo and fresh vegetables/produce next to it.
+                    Text: "They realised people needed everyday essentials delivered fast. So they built a
+                    platform for 10-minute grocery delivery." A quote: "We didn't just build an app, we
+                    built a solution to a real problem." Checklist: Built the MVP, Tested with early
+                    customers, Improved the app & delivery, Solved real customer problems. Tagline: "No big
+                    office. No big team. Just execution."
+                </li>
+                <li>
+                    Slide 3 (The Struggle - Money Crisis & Fundraising): Dark, dramatic background of a city
+                    skyline at night with neon purple lighting. Title: "The Struggle - Money Crisis &
+                    Fundraising". Left side: "Money Crisis" with bullet points (High operational costs,
+                    Frequent cash burn, Needed more capital to scale). Right side: "Fundraising Journey"
+                    timeline: Seed Round (2021 - $60M), Series A (2022 - $200M), Series B (2023 - $340M),
+                    Series C (2024 - $665M). A quote: "There were days when we had to make hard choices.
+                    Every rupee mattered." Tagline: "It wasn't easy. But they never gave up."
+                </li>
+                <li>
+                    Slide 4 (The Founders - Two Friends, One Dream): A portrait of the two founders,
+                    Kaivalya Vohra and Aadit Palicha, wearing black Zepto hoodies, standing confidently
+                    behind a laptop with the Zepto logo. Title: "Zepto - 10 Minute Delivery". Text pointing
+                    to them: "Kaivalya Vohra (19) IIT Bombay" and "Aadit Palicha (19) IIT Bombay". Large
+                    pink text: "Two Friends. One Dream. Zero Money. A Billion Dollar Company." A pink
+                    brush-stroke box with: "The idea wasn't just to build a company, it was to build a
+                    better way of living." Tagline: "Two young minds. One big dream."
+                </li>
+                <li>
+                    Slide 5 (The Breakthrough - Scaling Fast): Uplifting, cinematic shot of a fleet of Zepto
+                    delivery riders on motorcycles, wearing purple uniforms and helmets, driving towards a
+                    glowing city skyline at sunrise/sunset. Title: "The Breakthrough - Scaling Fast". Text:
+                    "From 1 city to 100+ cities. From a small team to a 10,000+ workforce. Zepto grew at
+                    lightning speed." A purple map of India with location pins. Stats grid: 100+ Cities,
+                    10M+ Monthly Active Users, 10K+ Delivery Partners, 500+ SKUs. Tagline: "From 1 city to
+                    100+. In just 2 years."
+                </li>
+            </ol>
+
+        </span>
+
+        <!-- ================= CONTAINER 5 ================= -->
+        <h1>Radhakishan Damani     28/08/2026</h1>
+        <div class="slider-container">
+            <button class="btn prev-btn">&#10094;</button>
+            <button class="btn next-btn">&#10095;</button>
+            <div class="slider-wrapper">
+                <img src="dmart1.jpeg" alt="Photo 1">
+                <img src="dmart2.jpeg" alt="Photo 1">
+                <img src="dmart3.jpeg" alt="Photo 1">
+                <img src="dmart4.jpeg" alt="Photo 1">
+                <img src="dmart5.jpeg" alt="Photo 1">
+            </div>
+        </div>
+        <span>
+            <ol>
+                <li>
+                    Slide No. 01 of a premium entrepreneurship presentation titled “Who Is the Founder of DMart?”
+                    featuring Radhakishan Damani. Use a 4:5 vertical layout, ivory background, dark forest-green
+                    typography, and realistic photography. Place the E-Cell logo at the top-left and E-Cell IIT Bombay
+                    National Entrepreneurship Challenge 2026 logo at the top-right. Show Damani's portrait on the right
+                    and a DMart store at the bottom. On the left, include Born: 12 March 1954, Bhopal, Madhya Pradesh;
+                    Education: B.Com. (Hons), Sydenham College, Mumbai; Early Career: Started stockbroking in 1980. Add
+                    the tagline “From Stock Markets to Retail — A Journey Built on Vision, Discipline and Patience.”
+                    Professional, readable, clean infographic design.
+                </li>
+                <li>
+                    Slide No. 02 titled “The Struggle Behind Success” with subtitle “Problem | Failure | Solution.” Use
+                    a dark charcoal background and three vertical cards: red for THE PROBLEM, yellow for THE FAILURE,
+                    and emerald green for THE SOLUTION. Place E-Cell and NEC 2026 logos at the top. Explain the
+                    challenges of India's fragmented retail market, the operational difficulties of early retail
+                    ventures, and DMart's value-focused approach through competitive prices, high sales volume, and
+                    efficient operations. Mention that the first DMart store opened in 2002. Include suitable icons, a
+                    traditional Indian market photograph, a business setback image, and the phrase “He Turned a Problem
+                    into an Opportunity.” Premium, high-contrast infographic with readable text.
+                </li>
+                <li>
+                    Slide No. 03 titled “The Product & Customer Experience.” Use a cream background with forest-green
+                    accents. Place E-Cell branding at the top and the DMart wordmark prominently below the title, with
+                    the tagline “Quality | Variety | Lowest Prices.” Show a realistic Indian supermarket interior with a
+                    customer pushing a shopping trolley on the left. On the right, add two sections: “What Is DMart?”
+                    describing its value-retail model and everyday products, and “Why Customers Choose It” listing
+                    competitive prices, wide product selection, organized aisles, quality everyday products, and
+                    convenient shopping. At the bottom, include a customer-experience panel with an illustrative
+                    testimonial and the slogan “Simple Idea. Big Impact.” Modern typography, green checkmarks, balanced
+                    layout, professional presentation quality.
+                </li>
+                <li>
+                    Slide No. 04 titled “From One Store to a National Brand” with subtitle “Expansion | Growth | Net
+                    Worth.” Use an ivory background, forest-green accents, and a subtle DMart storefront photograph.
+                    Place E-Cell and NEC 2026 logos at the top. Create a horizontal business timeline beginning with
+                    2002 — First DMart store in Mumbai, followed by verified expansion milestones through 2025. Include
+                    a clean green bar chart showing store expansion or Radhakishan Damani's net worth, using only
+                    reliable, dated, verified figures. Add three statistic blocks for store count, geographic presence,
+                    and customer reach with dates and sources. Finish with a green brushstroke banner reading “Growth Is
+                    Built on Consistency.” Accurate data, clear chart labels, and premium infographic design.
+                </li>
+                <li>
+                    Slide No. 05 titled “Consistency, Hard Work & Legacy.” Use a warm ivory background, forest-green
+                    typography, and realistic supermarket photography. Place E-Cell and NEC 2026 logos at the top. Show
+                    a realistic portrait of Radhakishan Damani in a white shirt beside a shopping trolley on the right.
+                    On the left, present four leadership principles with green icons: 1. Disciplined Investor — patient
+                    decisions and long-term thinking; 2. Hands-on Approach — focus on business operations; 3. No
+                    Shortcuts — hard work and consistency; 4. Focus on People — creating value for customers, employees,
+                    partners, and society. Add the banner “One Brand. Millions of Lives.” At the bottom, show icons for
+                    groceries, household essentials, apparel, and everyday products. Finish with “Vision + Hard Work +
+                    Consistency = Lasting Impact.” Inspirational, polished closing slide with readable text.
+                </li>
+            </ol>
+
+        </span>
+
+        <!-- ================= CONTAINER 6 ================= -->
+        <div class="slider-container">
+            <h1>The Takeaway   05/09/2026</h1>
+            <button class="btn prev-btn">&#10094;</button>
+            <button class="btn next-btn">&#10095;</button>
+            <div class="slider-wrapper">
+                <img src="take1.jpeg" alt="Photo 1">
+                <img src="take2.jpeg" alt="Photo 1">
+                <img src="take3.jpeg" alt="Photo 1">
+                <img src="take4.jpeg" alt="Photo 1">
+                <img src="take5.jpeg" alt="Photo 1">
+                <img src="take6.jpeg" alt="Photo 1">
+            </div>
+        </div>
+        <span>
+            <ol>
+                <li>
+                    1. Defining the Entrepreneurial Mindset
+
+                    · Explain that entrepreneurship is a journey, not a single moment.
+                    · Emphasize that mindset matters as much as the idea.
+                    · Highlight the four core traits of an entrepreneur:
+                    · Curiosity: Ask better questions.
+                    · Creativity: Imagine better possibilities.
+                    · Courage: Take calculated risks.
+                    · Persistence: Keep learning after setbacks.
+                    · Introduce the continuous cycle: Start • Learn • Improve • Repeat
+                </li>
+                <li>
+                    2. Identifying the Problem and Opportunity
+
+                    · Stress that every strong startup begins with a clear understanding of a real-world problem.
+                    · Outline the process of finding opportunity: An entrepreneur sees a gap where others see
+                    difficulty.
+                    · Detail the four-step process for turning an idea into an opportunity:
+                    1. Notice: Observe a real problem.
+                    2. Understand: Know the people affected.
+                    3. Create: Design a practical solution.
+                    4. Test: Learn, improve, and repeat.
+                    · Include the guiding question: 'Whose problem am I solving?'
+                </li>
+                <li>
+                    3. From Idea to Impact
+
+                    · Explain that the goal is not just to launch something, but to create lasting value.
+                    · Define the components of true impact: People, Change, Value, and Growth.
+                    · Emphasize thinking beyond the first customer to build something people remember.
+                    · Outline the progression: Idea → Action → Learning → Impact.
+
+                </li>
+                <li>
+                    3. From Idea to Impact
+
+                    · Explain that the goal is not just to launch something, but to create lasting value.
+                    · Define the components of true impact: People, Change, Value, and Growth.
+                    · Emphasize thinking beyond the first customer to build something people remember.
+                    · Outline the progression: Idea → Action → Learning → Impact.
+
+                </li>
+            </ol>
+
+        </span>
+
+        <!-- ================= CONTAINER 7 ================= -->
+        <h1>Vineeta Singh   13/09/2026</h1>
+        <div class="slider-container">
+            <button class="btn prev-btn">&#10094;</button>
+            <button class="btn next-btn">&#10095;</button>
+            <div class="slider-wrapper">
+                <img src="sugar1.jpeg" alt="Photo 1">
+                <img src="sugar2.jpeg" alt="Photo 1">
+                <img src="sugar3.jpeg" alt="Photo 1">
+                <img src="sugar4.jpeg" alt="Photo 1">
+                <img src="sugar5.jpeg" alt="Photo 1">
+            </div>
+        </div>
+        <span>
+            <ol>
+                <li>
+                    1. Introduction & The Founder's Vision
+
+                    · Subject: Highlight Vineeta Singh, Co-founder & CEO of SUGAR Cosmetics.
+                    · The Vision: Frame her journey as a mission to build a brand that every Indian woman could feel
+                    proud of, creating 'Bold Makeup for the Modern Indian Woman.'
+                    · Founder's Background:
+                    · Education: B.Tech in Electronics & Communication from IIT Madras.
+                    · Early Career: Gained corporate experience at Bain & Company and Flipkart.
+                    · The Big Dream: Wanted to build a brand that celebrates Indian women and makes beauty accessible to
+                    all.
+                </li>
+                <li>
+                    2. Company Overview & Milestones
+
+                    · About the Company: SUGAR Cosmetics is an Indian beauty brand founded in 2012 by Vineeta Singh and
+                    Kaushik Mukherjee. It is known for high-quality, long-lasting, and inclusive makeup products
+                    designed specifically for Indian skin tones, preferences, and lifestyles.
+                    · Key Details: Founded in 2012, headquartered in Gurugram, India, operating in the Beauty &
+                    Cosmetics industry.
+                    · Timeline of Growth:
+                    · 2012: Launched with 10 products.
+                    · 2015: Expanded product range and offline presence.
+                    · 2017: Entered online marketplaces and grew across India.
+                    · 2019: Opened first physical stores and expanded product range.
+                    · 2021+: Grew into a household name with a strong global presence.
+                </li>
+                <li>
+                    3. Products, Innovation & Core Values
+
+                    · Product Philosophy: 'Makeup for every mood, every skin tone, every you.'
+                    · Product Categories:
+                    · Face: Foundations, Concealers, Primers, Compact.
+                    · Lips: Lipsticks, Lip Crayons, Lip Glosses.
+                    · Eyes: Eyeshadow Palettes, Kajal, Eyeliners, Mascara.
+                    · Tools & Accessories: Brushes, Sponges, Bags.
+                    · Core Values (The 'Clean' Promise): Cruelty-Free, Paraben-Free, Vegan, Dermatologically Tested, and
+                    Made for Indian Skin.
+                </li>
+                <li>
+                    4. Customer Validation & Market Reception
+
+                    · Reviews: Highlight the strong customer feedback with an average rating of 4.5/5 from over
+                    1,20,000+ reviews.
+                    · Key Metrics: High scores for Product Quality (92%), Packaging (90%), Shade Range (88%), Longevity
+                    (85%), and Value for Money (82%).
+                    · Testimonials: Include snippets like 'Finally a brand that understands Indian skin tones!' and
+                    'Stays for hours and the shades are just perfect!' to demonstrate real customer love.
+                </li>
+                <li>
+                    5. Financials & Profitability
+
+                    · Growth Trajectory: Show a steady increase in Estimated Annual Revenue (INR Cr) from 2017 through
+                    2023.
+                    · Valuation: Current estimated valuation of ₹2,000+ Cr (2023-24).
+                    · Financial Health: Bootstrapped initially, later raised funds (Series A & B). The company is
+                    profitable with strong retail and online sales.
+                </li>
+            </ol>
+
+        </span>
+
+        <!-- ================= CONTAINER 8 ================= -->
+        <h1>Bhavish Aggarwal    19/09/2026</h1>
+        <div class="slider-container">
+            <button class="btn prev-btn">&#10094;</button>
+            <button class="btn next-btn">&#10095;</button>
+            <div class="slider-wrapper">
+                <img src="bhavish1.jpeg" alt="Photo 1">
+                <img src="bhavish2.jpeg" alt="Photo 1">
+                <img src="bhavish3.jpeg" alt="Photo 1">
+                <img src="bhavish4.jpeg" alt="Photo 1">
+                <img src="bhavish5.jpeg" alt="Photo 1">
+                <img src="bhavish6.jpeg" alt="Photo 1">
+            </div>
+        </div>
+        <span>
+            <ol>
+                <li>
+                    Slide 1 (01/06): Title Slide
+
+                    · Heading: FOUNDER SUCCESS STORY
+                    · Subject: Bhavish Aggarwal — Founder, Ola
+                    · Tagline: A bad road trip turned into one of India's biggest startups.
+                </li>
+                <li>
+                    Slide 2 (02/06): The Beginning
+
+                    · Heading: THE BEGINNING
+                    · Subheading: An engineer with a frustrating cab ride.
+                    · Content: Bhavish Aggarwal, an IIT Bombay graduate working at Microsoft Research, booked a cab for
+                    a road trip to Bandipur. The car broke down, the driver overcharged him, and the experience was
+                    frustrating enough to plant an idea: India's cab-booking experience needed to be rebuilt from
+                    scratch.
+                </li>
+                <li>Slide 3 (03/06): The Journey
+
+                    · Heading: THE JOURNEY
+                    · Subheading: From a bad cab ride to a mobility giant
+                    · Timeline:
+                    · 2010: Quits Microsoft, founds OlaCabs with Ankit Bhati
+                    · 2011: Launches the Ola app in Mumbai
+                    · 2014–15: Scales across Indian cities, raises major funding
+                    · 2017+: Expands into Ola Electric — EV manufacturing
+                </li>
+                <li>
+
+                    Slide 4 (04/06): The Takeaway
+
+                    · Heading: THE TAKEAWAY
+                    · Quote: “The best startup ideas often come from your own everyday frustration.”
+                </li>
+                <li>
+                    Slide 5 (05/06): Why It Matters
+
+                    · Heading: WHY IT MATTERS
+                    · Key Point: He didn't wait for the perfect idea to arrive.
+                    · Explanation: Bhavish had a stable, prestigious job at Microsoft Research. He left it not because
+                    he had a perfect business plan, but because he'd lived a problem personally and couldn't ignore it.
+                    That's often where the strongest startups begin.
+                </li>
+                <li>
+                    Slide 6 (06/06): Conclusion & Call to Action
+
+                    · Message: Your daily frustration could be your next big idea.
+                    · Hashtags: #FounderStories #Entrepreneurship #ECellIITB #StartupIndia
+
+                </li>
+            </ol>
+
+
+        </span>
+
+        <!-- ================= CONTAINER 9 ================= -->
+        <h1>Ritesh Agarwal    25/09/2026</h1>
+        <div class="slider-container">
+            <button class="btn prev-btn">&#10094;</button>
+            <button class="btn next-btn">&#10095;</button>
+            <div class="slider-wrapper">
+                <img src="ritesh1.jpeg" alt="Photo 1">
+                <img src="ritesh2.jpeg" alt="Photo 1">
+                <img src="ritesh3.jpeg" alt="Photo 1">
+                <img src="ritesh4.jpeg" alt="Photo 1">
+                <img src="ritesh5.jpeg" alt="Photo 1">
+                <img src="ritesh6.jpeg" alt="Photo 1">
+            </div>
+        </div>
+        <span>
+            <ol>
+                <li>
+                    Slide 1 (01/06): Title Slide
+
+                    · Heading: FOUNDER SUCCESS STORY
+                    · Subject: Ritesh Agarwal — Founder, OYO
+                    · Tagline: Dropped out at 19 to build something no one believed in yet.
+
+                </li>
+                <li>
+                    Slide 2 (02/06): The Beginning
+
+                    · Heading: THE BEGINNING
+                    · Subheading: No business family. No top-tier IIT degree.
+                    · Content: Ritesh started with a budget accommodation booking website that most people ignored. He
+                    wasn't chasing a perfect plan — he was chasing a problem he'd seen firsthand while backpacking
+                    across India as a teenager.
+                </li>
+                <li>
+                    Slide 3 (03/06): The Journey
+
+                    · Heading: THE JOURNEY
+                    · Subheading: From idea to global brand
+                    · Timeline:
+                    · Age 17: Backpacks across India, sees the budget-stay problem
+                    · Age 18: Drops out of college to build a booking platform
+                    · 2013: Launches OYO — few believe in the idea at first
+                    · Today: OYO operates across multiple countries globally
+                </li>
+                <li>
+                    Slide 4 (04/06): The Takeaway
+
+                    · Heading: THE TAKEAWAY
+                    · Quote: “You don't need the ‘right’ background to start — you need to start.”
+                </li>
+                <li>
+                    Slide 5 (05/06): Why It Matters
+
+                    · Heading: WHY IT MATTERS
+                    · Key Point: His story wasn't about a perfect plan.
+                    · Explanation: It was about starting messy, learning in public, and refusing to wait for permission
+                    to begin. Every founder’s early chapters look uncertain — the difference is whether they keep moving
+                    anyway.
+                </li>
+                <li>
+                    Slide 6 (06/06): Conclusion & Call to Action
+
+                    · Message: Start messy. Start now.
+                    · Hashtags: #FounderStories #Entrepreneurship #ECellIITB #StartupIndia
+
+                </li>
+
+            </ol>
+
+
+        </span>
+
+        <!-- ================= CONTAINER 10 ================= -->
+        <h1>Elon Musk   02/10/2026</h1>
+        <div class="slider-container">
+            <button class="btn prev-btn">&#10094;</button>
+            <button class="btn next-btn">&#10095;</button>
+            <div class="slider-wrapper">
+                <img src="elon1.jpeg" alt="Photo 1">
+                <img src="elon2.jpeg" alt="Photo 1">
+                <img src="elon3.jpeg" alt="Photo 1">
+                <img src="elon4.jpeg" alt="Photo 1">
+                <img src="elon5.jpeg" alt="Photo 1">
+                <img src="elon6.jpeg" alt="photo 1">
+            </div>
+        </div>
+        <span>
+            <ol>
+                <li>
+                    Slide 1 (01/06): Title Slide
+
+                    · Heading: FOUNDER SUCCESS STORY
+                    · Subject: ELON MUSK
+                    · Tagline: From bold ideas to building companies that changed industries.
+                    · Key Themes Listed: VISION, EXECUTION, PERSISTENCE
+                </li>
+                <li>
+                    Slide 2 (02/06): Early Beginnings
+
+                    · Heading: It Started With Curiosity.
+                    · Subject: 1995 • ZIP2
+                    · Content: An early internet company Musk co-founded with his brother. It was later acquired by
+                    Compaq in 1999.
+                    · Key Lesson: Curiosity → Action. Exploring technology can become the first step toward
+                    entrepreneurship.
+                </li>
+                <li>
+                    Slide 3 (03/06): One Venture Led To Another
+
+                    · Heading: One Venture Led To Another.
+                    · Timeline/Companies:
+                    · 01 X.COM: Co-founded in 1999 as an online financial-services company.
+                    · 02 PAYPAL: X.com became part of the company that became PayPal.
+                    · Milestone: 2002 - PAYPAL ACQUIRED BY EBAY
+
+                </li>
+                <li>
+                    Slide 4 (04/06): Changing the Auto Industry
+
+                    · Heading: Changing The Way We Think About Cars.
+                    · Subject: TESLA • 2008
+                    · Content: Musk became Tesla’s CEO in 2008. Tesla focused on electric vehicles and sustainable
+                    energy.
+                    · Key Pillars:
+                    · 01 ELECTRIC: Accelerating the transition toward electric vehicles.
+                    · 02 SUSTAINABLE: Technology with a broader sustainable-energy vision.
+                    · 03 EXECUTION: Innovation backed by products, manufacturing and scale.
+                </li>
+                <li>
+                    Slide 5 (05/06): What Can Entrepreneurs Learn?
+
+                    · Heading: What Can Entrepreneurs Learn?
+                    · Key Lessons:
+                    · 01 THINK BIG: Test an idea’s potential.
+                    · 02 SOLVE REAL PROBLEMS: Build around meaningful needs.
+                    · 03 LEARN FROM SETBACKS: Turn challenges into feedback.
+                    · 04 KEEP BUILDING: Long-term goals need consistency.
+                    · 05 QUESTION THE ORDINARY: Ask: can this be done differently?
+                </li>
+                <li>
+                    Slide 6 (06/06): Conclusion
+
+                    · Heading: BIG VISIONS START SMALL.
+                    · Content: Building something ambitious takes more than an idea. It takes curiosity, persistence,
+                    learning and execution.
+                </li>
+
+            </ol>
+
+
+        </span>
+
+
+        <!-- ================= CONTAINER 11 ================= -->
+        <h1>The Part Of Nobody    10/10/2026</h1>
+        <div class="slider-container">
+            <button class="btn prev-btn">&#10094;</button>
+            <button class="btn next-btn">&#10095;</button>
+            <div class="slider-wrapper">
+                <img src="part1.jpeg" alt="Photo 1">
+                <!-- <img src="part2.jpeg" alt="Photo 1"> -->
+                <img src="part3.jpeg" alt="Photo 1">
+                <img src="part4.jpeg" alt="Photo 1">
+                <img src="part5.jpeg" alt="Photo 1">
+                <img src="part6.jpeg" alt="photo1">
+            </div>
+        </div>
+        <span>
+            <ol>
+                <li>
+                    Slide 1 (01/06): Title Slide
+
+                    · Heading: THE PART NOBODY TALKS ABOUT
+                    · Subheading: A note for every founder in the messy middle
+                    · Visual: A crescent moon icon.
+                </li>
+                <li>
+                    Slide 2 (02/06): Encouragement
+
+                    · Quote: That version of you is not failing. That version of you is building.
+                    · Visual: A heart icon.
+                </li>
+                <li>
+                    Slide 3 (03/06): The Reality of Success
+
+                    · Heading: WHAT ACTUALLY SEPARATES THEM
+                    · Content:
+                    · Not talent.
+                    · Not timing.
+                    · Not luck.
+                    · Explanation: Every founder whose story you admire spent far more time in the uncertain middle than
+                    in the highlight reel. What separated the ones who made it was simple: they kept showing up on the
+                    days when nothing felt like progress.
+                </li>
+                <li>
+                    Slide 4 (04/06): Acknowledging the Struggle
+
+                    · Heading: IF TODAY FEELS HARD
+                    · Quote: You might just be exactly where every founder before you has stood.
+                    · Explanation: A slow, unclear, or discouraging day is not a sign you're on the wrong path. It's
+                    often just part of the path.
+
+                </li>
+                <li>
+                    Slide 5 (05/06): Final Thoughts & Call to Action
+
+                    · Heading: Progress is quiet before it's visible.
+                    · Subheading: Keep going.
+                    · Hashtags: #StartupMotivation #EntrepreneurMindset #ECellIITB #FounderJourney #BuildInPublic
+                </li>
+
+            </ol>
+
+
+        </span>
+
+        <!-- ================= CONTAINER 12 ================= -->
+        <h1>Deepinder Goyal 14/10/2026</h1>
+        <div class="slider-container">
+            <button class="btn prev-btn">&#10094;</button>
+            <button class="btn next-btn">&#10095;</button>
+            <div class="slider-wrapper">
+                <img src="deepinder1.jpeg" alt="Photo 1">
+                <img src="deepinder2.jpeg" alt="Photo 1">
+                <img src="deepinder3.jpeg" alt="Photo 1">
+                <img src="deepinder4.jpeg" alt="Photo 1">
+                <img src="deepinder5.jpeg" alt="Photo 1">
+                <img src="deepinder6.jpeg" alt="Photo 1">
             </div>
         </div>
 
     </div>
+    <span>
+        <ol>
+            <li>
+                Slide 1 (01/06): Title Slide
 
+                · Heading: SUCCESS STORY
+                · Subject: Deepinder Goyal — Founder, Zomato
+                · Tagline: Built a food-tech giant... that didn't start with food delivery at all.
+            </li>
+            <li>
+                Slide 2 (02/06): The Beginning
+
+                · Heading: THE BEGINNING
+                · Subheading: It started as a simple menu-scanning website.
+                · Content: Deepinder Goyal built "Foodiebay" to solve one small, specific problem — helping office
+                colleagues avoid calling restaurants for menus. There was no grand vision of building India's
+                biggest food-tech company. Just a real problem, solved for the people around him.
+            </li>
+            <li>
+                Slide 3 (03/06): The Journey
+
+                · Heading: THE JOURNEY
+                · Subheading: From office menus to a public company
+                · Timeline:
+                · 2008: Launches "Foodiebay" — a menu-scanning site
+                · 2010: Rebrands to Zomato, expands beyond menus
+                · 2015: Enters food delivery across major Indian cities
+                · 2021: Zomato goes public on the Indian stock exchange
+            </li>
+            <li>
+                Slide 4 (04/06): The Takeaway
+
+                · Heading: THE TAKEAWAY
+                · Quote: “You don't need to see the whole mountain before you take the first step.”
+            </li>
+            <li>
+                Slide 5 (05/06): Why It Matters
+
+                · Heading: WHY IT MATTERS
+                · Key Point: The bigger vision often reveals itself along the way.
+                · Explanation: Zomato didn't begin as a plan to disrupt food delivery. It began as a small, useful
+                tool for a real problem. Solve what's in front of you well, and the scale often follows.
+            </li>
+            <li>
+                Slide 6 (06/06): Conclusion & Call to Action
+
+                · Message: Solve the problem in front of you.
+                · Hashtags: #FounderStories #Entrepreneurship #ECellIITB #StartupIndia
+            </li>
+        </ol>
+    </span>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. सभी 12 स्लाइडर कंटेनरों को चुनें
+            const allSliders = document.querySelectorAll('.slider-container');
+
+            // 2. हर स्लाइडर कंटेनर के लिए अलग लॉजिक चालू करें
+            allSliders.forEach((container) => {
+                let currentIndex = 0;
+                let slideInterval;
+
+                const sliderWrapper = container.querySelector('.slider-wrapper');
+                const prevBtn = container.querySelector('.prev-btn');
+                const nextBtn = container.querySelector('.next-btn');
+                const totalImages = sliderWrapper.children.length; // खुद ही 10 फोटो गिन लेगा
+
+                // स्लाइडर की फोटो शिफ्ट करने का फ़ंक्शन
+                function updateSlider() {
+                    sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+                }
+
+                // Next स्लाइड पर जाने का फ़ंक्शन
+                function nextSlide() {
+                    currentIndex++;
+                    if (currentIndex >= totalImages) {
+                        currentIndex = 0; // आखिरी फोटो के बाद वापस पहली फोटो पर जाएं
+                    }
+                    updateSlider();
+                }
+
+                // Prev स्लाइड पर जाने का फ़ंक्शन
+                function prevSlide() {
+                    currentIndex--;
+                    if (currentIndex < 0) {
+                        currentIndex = totalImages - 1; // पहली फोटो के पीछे जाने पर 10वीं फोटो पर जाएं
+                    }
+                    updateSlider();
+                }
+
+                // Next बटन क्लिक इवेंट
+                nextBtn.addEventListener('click', () => {
+                    nextSlide();
+                    resetTimer(); // बटन दबाने पर ऑटो-टाइमर रीसेट हो जाएगा
+                });
+
+                // Prev बटन क्लिक इवेंट
+                prevBtn.addEventListener('click', () => {
+                    prevSlide();
+                    resetTimer(); // बटन दबाने पर ऑटो-टाइमर रीसेट हो जाएगा
+                });
+
+                // --- ऑटोमैटिक स्लाइडर (हर 3 सेकंड में बदलेगा, आप '3000' को बदल भी सकते हैं) ---
+                function startAutoSlide() {
+                    slideInterval = setInterval(nextSlide, 3000);
+                }
+
+                function stopAutoSlide() {
+                    clearInterval(slideInterval);
+                }
+
+                // जब यूजर माउस स्लाइडर के ऊपर रखे, तो ऑटो-चलना बंद हो जाए
+                container.addEventListener('mouseenter', stopAutoSlide);
+
+                // जब यूजर माउस हटाए, तो दोबारा ऑटो-चलना शुरू हो जाए
+                container.addEventListener('mouseleave', startAutoSlide);
+                // टाइमर रीसेट करने का फ़ंक्शन
+                function resetTimer() {
+                    stopAutoSlide();
+                    startAutoSlide();
+                }
+                // शुरुआत में ऑटो-स्लाइड चालू करें
+                startAutoSlide();
+            });
+        });
+    </script>
 </body>
+
 </html>
